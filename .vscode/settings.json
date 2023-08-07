@@ -1,0 +1,12 @@
+{
+    "rust-analyzer.showUnlinkedFileNotification": false,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "UserData",
+            "database": "${workspaceFolder:db_server}/database.sqlite"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

@@ -1,0 +1,46 @@
+curl -X GET -H "Content-Type: application/json" http://localhost:9000/database-queries/recommended-channels
+###
+curl -X POST -H "Content-Type: application/json" -d '{"query": "daniyedss"}' http://localhost:9000/database-queries/search-query
+
+
+
+###
+curl -X POST -H "Content-Type: application/json" -d '{"username": "uso", "email":"uso@hotmail.com", "passphrase":"12345678"}' http://localhost:9000/database-queries/create-new-user
+
+
+
+
+
+###
+GET http://localhost:9000/user/refresh/Dani
+
+### 
+POST http://localhost:9000/user/test
+Content-Type: application/json
+
+{
+    "deez": "ss"
+}
+
+###
+GET http://localhost:9000/user/encode-token/123
+### 
+POST http://localhost:9000/user/decode-token
+Content-Type: application/json
+
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTMsImV4cCI6MTY5MTI2NDAyOX0.1kVzHW1T7YHA7tY_300oGgwTLBpU-UcHzfYrS6hPB60"
+}
+
+###
+GET http://localhost:9000/user/protected 
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTMsImV4cCI6MTY5MTI2NDAyOX0.1kVzHW1T7YHA7tY_300oGgwTLBpU-UcHzfYrS6hPB60
+
+###
+GET http://localhost:9000/database-queries/test-db
+
+###
+POST http://localhost:9000/database-queries/test-db/daniyed
+
+###
+POST http://localhost:9000/database-queries/
