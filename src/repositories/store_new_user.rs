@@ -15,6 +15,7 @@ pub async fn store_new_user(
     prepared_new_user_data: &NewUser,
     database_connection: Pool<Sqlite>
 ) -> Result<(String, String), String> {
+    
     let mut tx = match database_connection.begin().await {
         Ok(tx) => tx,
         Err(err) => {

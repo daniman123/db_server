@@ -23,23 +23,16 @@ CREATE TABLE IF NOT EXISTS user_credentials
 );
 
 
-CREATE TABLE IF NOT EXISTS activity_types 
-(
-    type_id INTEGER PRIMARY KEY,
-    type_name VARCHAR(100) NOT NULL
-);
-
 
 CREATE TABLE IF NOT EXISTS activity_log 
 (   
-    log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    log_id BLOB PRIMARY KEY,
     user_id INTEGER,
-    type_id INTEGER,
     subject_user_id INTEGER, -- The user related to the action
+    type_name VARCHAR(100) NOT NULL,
     content TEXT, -- The content of the activity (for posts and comments)
     action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (type_id) REFERENCES activity_types(type_id),
     FOREIGN KEY (subject_user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
@@ -86,3 +79,5 @@ DELETE FROM user_credentials;
 DELETE FROM refreshtokens;
 DELETE FROM sqlite_sequence;
 
+DROP TABLE activity_types;
+DROP TABLE activity_log;

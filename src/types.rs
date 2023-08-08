@@ -1,9 +1,9 @@
-use std::borrow::Cow;
-use actix_web::web;
-use serde::{ Deserialize, Serialize };
+use crate::utils::tools::{hash_password, input_validator, is_email_valid, metaphone_encoding};
+use actix_web::web::{self};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use sqlx::{ Pool, Sqlite };
-use crate::utils::tools::{ hash_password, input_validator, metaphone_encoding, is_email_valid };
+use sqlx::{FromRow, Pool, Sqlite};
+use std::borrow::Cow;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct NewUserData {
@@ -63,7 +63,13 @@ pub struct AppState {
     pub db: Pool<Sqlite>,
 }
 
+#[derive(FromRow)]
 pub struct DbResult {
+    pub user_id: i64,
+}
+
+#[derive(sqlx::FromRow)]
+pub struct ChannelNames {
     pub username: String,
 }
 
@@ -74,15 +80,18 @@ pub struct JsonResponse {
 
 impl JsonResponse {
     pub fn new(database_return: Vec<String>) -> Self {
-        JsonResponse { result: database_return }
+        JsonResponse {
+            result: database_return,
+        }
     }
 }
 
-#[derive(Debug)]
-pub struct ActivityLog {
-    pub account_id: i64,
-    pub username: String,
-    pub activity_action: String,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ActivityMetaData {
+    pub user_id: i32,
+    pub subject_user_id: i32,
+    pub activity_type: String,
+    pub content: String,
 }
 
 #[derive(Serialize, Deserialize)]

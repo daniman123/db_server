@@ -9,7 +9,7 @@ pub async fn insert_refresh_tokens(
     
     let users_credentials_table_insert = sqlx
         ::query!(
-            "INSERT INTO refreshtokens (refresh_token, user_id) VALUES (?, ?)",
+            "INSERT OR REPLACE INTO refreshtokens (refresh_token, user_id) VALUES (?, ?)",
             refresh_token,
             user_id
         )

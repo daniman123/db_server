@@ -1,12 +1,12 @@
-curl -X GET -H "Content-Type: application/json" http://localhost:9000/database-queries/recommended-channels
+GET http://localhost:9000/database-queries/recommended-channels
 ###
 curl -X POST -H "Content-Type: application/json" -d '{"query": "daniyedss"}' http://localhost:9000/database-queries/search-query
 
-
+###
+curl -X POST -H "Content-Type: application/json" -d '{"username": "usoa", "email":"usoa@hotmail.com", "passphrase":"12345678"}' http://localhost:9000/database-queries/create-new-user
 
 ###
-curl -X POST -H "Content-Type: application/json" -d '{"username": "uso", "email":"uso@hotmail.com", "passphrase":"12345678"}' http://localhost:9000/database-queries/create-new-user
-
+curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1,"subject_user_id": 7, "activity_type": "POST","content": "YEA GAIS LUUhK"}' http://localhost:9000/database-queries/activities
 
 
 

@@ -6,3 +6,5 @@ pub mod append_users_table;
 pub mod append_users_details_table;
 pub mod append_users_credentials_table;
 pub mod append_refresh_tokens_table;
+pub mod get_username_by_id;
+pub mod activity_log_ops;
