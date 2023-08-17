@@ -1,8 +1,9 @@
 use actix_web::{web, HttpResponse};
 
 use crate::{
+    operations::insert_ops::auth_insert_ops::insert_refresh_tokens,
     types::{AppState, UserLoginData},
-    utils::tools::generate_token, operations::append_refresh_tokens_table::insert_refresh_tokens,
+    utils::tools::generate_token,
 };
 use chrono::Duration;
 use serde_json::Value;
@@ -17,11 +18,9 @@ pub async fn handle_login(
     state: web::Data<AppState>,
     secret: web::Data<String>,
 ) -> HttpResponse {
-
     let database_connection = &state.db.clone();
 
     let mut tx = database_connection.begin().await.unwrap();
-
 
     let db_res = sqlx::query_as!(
         UserExists,
@@ -46,14 +45,14 @@ pub async fn handle_login(
             if compared_check {
                 let id: i32 = db_res.user_id.unwrap().try_into().unwrap();
 
-
                 let refresh_duration = Duration::days(1);
                 let refresh_token = generate_token(id, secret.to_string(), refresh_duration).await;
 
-                insert_refresh_tokens(refresh_token.clone(), id, &mut tx).await.unwrap();
+                insert_refresh_tokens(refresh_token.clone(), id, &mut tx)
+                    .await
+                    .unwrap();
 
                 tx.commit().await.unwrap();
-
 
                 let access_duration = Duration::minutes(15);
                 let access_token =
@@ -72,7 +71,6 @@ pub async fn handle_login(
 }
 
 pub async fn handle_logout(body: web::Json<Value>, state: web::Data<AppState>) -> HttpResponse {
-    
     let user_id = body.0;
 
     let delete_refresh_token = sqlx::query!("DELETE FROM refreshtokens WHERE user_id = ?", user_id)

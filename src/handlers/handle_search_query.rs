@@ -1,12 +1,12 @@
-use actix_web::{ web, HttpResponse };
+use actix_web::{web, HttpResponse};
 
-use crate::types::{ AppState, SearchQuery, JsonResponse };
-use crate::operations::get_query_results::get_query;
+use crate::operations::get_ops::get_query_ops::get_query;
+use crate::types::{AppState, JsonResponse, SearchQuery};
 use crate::utils::tools::metaphone_encoding;
 
 pub async fn search_query(
     body: web::Json<SearchQuery>,
-    state: web::Data<AppState>
+    state: web::Data<AppState>,
 ) -> HttpResponse {
     let user_query = &body.query;
     let metaphoned_q = metaphone_encoding(&user_query);

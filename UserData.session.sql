@@ -28,12 +28,13 @@ CREATE TABLE IF NOT EXISTS activity_log
 (   
     log_id BLOB PRIMARY KEY,
     user_id INTEGER,
-    subject_user_id INTEGER, -- The user related to the action
+    subject_user_id INTEGER,
     type_name VARCHAR(100) NOT NULL,
-    content TEXT, -- The content of the activity (for posts and comments)
+    content TEXT,
     action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (subject_user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    -- CONSTRAINT unique_conditional_constraint UNIQUE (user_id, subject_user_id),
+    CHECK (type_name = "FOLLOW" OR type_name = "LIKE" OR type_name = "POST"), 
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 
@@ -79,5 +80,5 @@ DELETE FROM user_credentials;
 DELETE FROM refreshtokens;
 DELETE FROM sqlite_sequence;
 
-DROP TABLE activity_types;
+
 DROP TABLE activity_log;

@@ -68,7 +68,7 @@ pub struct DbResult {
     pub user_id: i64,
 }
 
-#[derive(sqlx::FromRow)]
+#[derive(sqlx::FromRow, Debug)]
 pub struct ChannelNames {
     pub username: String,
 }
@@ -86,7 +86,7 @@ impl JsonResponse {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ActivityMetaData {
     pub user_id: i32,
     pub subject_user_id: i32,

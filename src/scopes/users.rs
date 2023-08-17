@@ -1,7 +1,8 @@
 use crate::extractors::authentication_token::AuthenticationToken;
-use crate::operations::get_username_by_id::get_username;
+use crate::operations::get_ops::get_protected_ops::get_following;
+use crate::operations::get_ops::get_username;
 use crate::repositories::user_auth::{handle_login, handle_logout};
-use crate::types::AppState;
+use crate::types::{AppState, JsonResponse};
 use actix_web::{web, HttpResponse, Scope};
 use chrono::{Duration, Utc};
 use jsonwebtoken::{
@@ -16,6 +17,7 @@ pub fn user_scope() -> Scope {
         .route("/encode-token/{id}", web::get().to(encode_token))
         .route("/decode-token", web::post().to(decode_token))
         .route("/protected", web::get().to(protected))
+        .route("/get-protected-followers", web::get().to(protected_followers))
         .route("/login", web::post().to(handle_login))
         .route("/logout", web::post().to(handle_logout))
 }
@@ -31,7 +33,6 @@ struct PersistResponse {
     id: i32,
     username: String,
 }
-
 
 #[derive(Serialize, Deserialize)]
 struct EncodeResponse {
@@ -97,12 +98,7 @@ async fn decode_token(body: web::Json<DecodeBody>, secret: web::Data<String>) ->
     }
 }
 
-async fn protected(
-    auth_token: AuthenticationToken,
-    state: web::Data<AppState>,
-) -> HttpResponse {
-    println!("{}", auth_token.id);
-
+async fn protected(auth_token: AuthenticationToken, state: web::Data<AppState>) -> HttpResponse {
     let username = get_username(auth_token.id as i32, state).await;
 
     HttpResponse::Ok().json(PersistResponse {
@@ -110,4 +106,18 @@ async fn protected(
         id: auth_token.id.try_into().unwrap(),
         username,
     })
+}
+
+async fn protected_followers(
+    auth_token: AuthenticationToken,
+    state: web::Data<AppState>,
+) -> HttpResponse {
+    let result = get_following(auth_token.id as i64, state).await;
+
+    let usernames: Vec<String> = result
+        .iter()
+        .map(|result| result.username.clone())
+        .collect();
+
+    HttpResponse::Ok().json(JsonResponse::new(usernames))
 }

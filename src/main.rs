@@ -5,7 +5,9 @@ mod operations;
 mod repositories;
 mod scopes;
 mod types;
+mod types_;
 mod utils;
+mod models;
 
 // use color_eyre::Result;
 use actix_cors::Cors;
@@ -15,7 +17,7 @@ use actix_web::{
     web::{self, Data},
     App, HttpServer,
 };
-use scopes::{database_queries::database_queries_scope, users::user_scope};
+use scopes::{database_queries::database_queries_scope, users::user_scope, activities::activites_scope};
 use types::AppState;
 use utils::db::create_sqlite_pool;
 
@@ -39,6 +41,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             )))
             .service(user_scope())
             .service(database_queries_scope())
+            .service(activites_scope())
     };
 
     // Start the Actix Web server

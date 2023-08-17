@@ -1,21 +1,19 @@
-use chrono::Duration;
-use sqlx::{ Pool, Sqlite };
-use crate::operations::append_refresh_tokens_table::insert_refresh_tokens;
-use crate::types::NewUser;
-use crate::operations::{
-    append_users_credentials_table::insert_users_credentials_new_user,
-    append_users_details_table::insert_users_details_new_user,
-    append_users_table::insert_users_table_new_user,
-    get_user_id::get_by_user_id,
+use crate::operations::insert_ops::auth_insert_ops::{
+    insert_refresh_tokens, insert_users_credentials_new_user, insert_users_details_new_user,
 };
+use crate::operations::{
+    get_ops::get_by_user_id, insert_ops::auth_insert_ops::insert_users_table_new_user,
+};
+use crate::types::NewUser;
 use crate::utils::tools::generate_token;
+use chrono::Duration;
+use sqlx::{Pool, Sqlite};
 
 pub async fn store_new_user(
     secret: String,
     prepared_new_user_data: &NewUser,
-    database_connection: Pool<Sqlite>
+    database_connection: Pool<Sqlite>,
 ) -> Result<(String, String), String> {
-    
     let mut tx = match database_connection.begin().await {
         Ok(tx) => tx,
         Err(err) => {
@@ -35,7 +33,9 @@ pub async fn store_new_user(
         errors.push(err);
     }
 
-    let id = get_by_user_id(&prepared_new_user_data.username, &mut *tx).await.unwrap();
+    let id = get_by_user_id(&prepared_new_user_data.username, &mut *tx)
+        .await
+        .unwrap();
 
     let refresh_duration = Duration::days(1);
     let refresh_token = generate_token(id, secret.clone(), refresh_duration).await;
@@ -51,6 +51,6 @@ pub async fn store_new_user(
         tx.commit().await.unwrap();
         let access_duration = Duration::minutes(15);
         let access_token = generate_token(id, secret, access_duration).await;
-        return Ok((access_token,refresh_token));
+        return Ok((access_token, refresh_token));
     }
 }
