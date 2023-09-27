@@ -45,7 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     // Start the Actix Web server
-    HttpServer::new(app).bind("localhost:9000")?.run().await?;
+    HttpServer::new(app).bind("localhost:5000")?.run().await?;
 
     Ok(())
 }

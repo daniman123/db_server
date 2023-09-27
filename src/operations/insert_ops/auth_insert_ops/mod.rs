@@ -25,9 +25,9 @@ pub async fn insert_users_credentials_new_user(
     database_connection: &mut SqliteConnection,
 ) -> Result<(), String> {
     let users_credentials_table_insert = sqlx::query!(
-        "INSERT INTO user_credentials (email, passphrase) VALUES (?, ?)",
+        "INSERT INTO user_credentials (email, password) VALUES (?, ?)",
         prepared_new_user_data.email,
-        prepared_new_user_data.passphrase
+        prepared_new_user_data.password
     )
     .execute(database_connection)
     .await;

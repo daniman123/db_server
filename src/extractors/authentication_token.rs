@@ -12,6 +12,7 @@ use crate::scopes::users::Claims;
 #[derive(Serialize, Deserialize)]
 pub struct AuthenticationToken {
     pub id: usize,
+    pub token: String,
 }
 
 impl FromRequest for AuthenticationToken {
@@ -39,6 +40,7 @@ impl FromRequest for AuthenticationToken {
         match decode {
             Ok(token) => ready(Ok(AuthenticationToken {
                 id: token.claims.id,
+                token: auth_token.to_string(),
             })),
             Err(_) => ready(Err(ErrorUnauthorized("Unauthorized"))),
         }

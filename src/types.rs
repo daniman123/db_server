@@ -9,7 +9,7 @@ use std::borrow::Cow;
 pub struct NewUserData {
     pub username: String,
     pub email: String,
-    pub passphrase: String,
+    pub password: String,
 }
 
 #[derive(Debug)]
@@ -17,7 +17,7 @@ pub struct NewUser {
     pub username: String,
     pub phonetic_username: Cow<'static, str>,
     pub email: String,
-    pub passphrase: String,
+    pub password: String,
 }
 
 impl NewUser {
@@ -32,13 +32,13 @@ impl NewUser {
 
         let username = request_body_data.username.clone();
         let phonetic_username = Cow::Owned(metaphone_encoding(&username));
-        let hashed_passphrase = hash_password(&request_body_data.passphrase);
+        let hashed_password = hash_password(&request_body_data.password);
 
         Ok(NewUser {
             username,
             phonetic_username,
             email: request_body_data.email.clone(),
-            passphrase: hashed_passphrase,
+            password: hashed_password,
         })
     }
 }
@@ -102,5 +102,6 @@ pub struct RefreshClaims {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AccessTokenRes {
-    pub access: String,
+    pub access_token: String,
+    pub user_id: i32,
 }

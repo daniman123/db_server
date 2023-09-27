@@ -13,7 +13,7 @@ pub async fn store_new_user(
     secret: String,
     prepared_new_user_data: &NewUser,
     database_connection: Pool<Sqlite>,
-) -> Result<(String, String), String> {
+) -> Result<(String, String, i32), String> {
     let mut tx = match database_connection.begin().await {
         Ok(tx) => tx,
         Err(err) => {
@@ -51,6 +51,6 @@ pub async fn store_new_user(
         tx.commit().await.unwrap();
         let access_duration = Duration::minutes(15);
         let access_token = generate_token(id, secret, access_duration).await;
-        return Ok((access_token, refresh_token));
+        return Ok((access_token, refresh_token, id));
     }
 }

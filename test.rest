@@ -1,35 +1,35 @@
-GET http://localhost:9000/database-queries/recommended-channels
+GET http://localhost:5000/database-queries/recommended-channels
 ###
-curl -X POST -H "Content-Type: application/json" -d '{"query": "da"}' http://localhost:9000/database-queries/search-query
+curl -X POST -H "Content-Type: application/json" -d '{"query": "da"}' http://localhost:5000/database-queries/search-query
 
 ###
-curl -X POST -H "Content-Type: application/json" -d '{"username": "usoa", "email":"usoa@hotmail.com", "passphrase":"12345678"}' http://localhost:9000/database-queries/create-new-user
+curl -X POST -H "Content-Type: application/json" -d '{"username": "usoa", "email":"usoa@hotmail.com", "password":"12345678"}' http://localhost:5000/database-queries/create-new-user
 
 ###
-curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1,"subject_user_id": 7, "activity_type": "POST","content": "YEA GAIS LUUhK"}' http://localhost:9000/database-queries/activities
-
-
-###
-curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1,"subject_user_id": 2, "activity_type": "FOLLOW","content": " "}' http://localhost:9000/database-queries/activities
-
-###
-curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1,"subject_user_id": 0, "activity_type": "POST","content": "yea gaiiissss hay discgonnected"}' http://localhost:9000/activities/post
+curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1,"subject_user_id": 7, "activity_type": "POST","content": "YEA GAIS LUUhK"}' http://localhost:5000/database-queries/activities
 
 
 ###
-curl -X POST -H "Content-Type: application/json" -d '{"username": "dana"}' http://localhost:9000/database-queries/channel-data
+curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1,"subject_user_id": 2, "activity_type": "FOLLOW","content": " "}' http://localhost:5000/database-queries/activities
+
+###
+curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1,"subject_user_id": 0, "activity_type": "POST","content": "yea gaiiissss hay discgonnected"}' http://localhost:5000/activities/post
 
 
 ###
-GET http://localhost:9000/user/get-protected-followers
+curl -X POST -H "Content-Type: application/json" -d '{"username": "dana"}' http://localhost:5000/database-queries/channel-data
+
+
+###
+GET http://localhost:5000/user/get-protected-followers
 Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjkxODQ2MzcyfQ.JqY_5hEkpuKcR9ux7mAtP_NFcCyEoUkaGiUkn-j7HHY
 
 
 ###
-GET http://localhost:9000/user/refresh/Dani
+GET http://localhost:5000/user/refresh/Dani
 
 ### 
-POST http://localhost:9000/user/test
+POST http://localhost:5000/user/test
 Content-Type: application/json
 
 {
@@ -37,24 +37,24 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9000/user/encode-token/1
+GET http://localhost:5000/user/encode-token/1
 ### 
-POST http://localhost:9000/user/decode-token
+POST http://localhost:5000/user/decode-token
 Content-Type: application/json
 
 {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjkxODQ2MzcyfQ.JqY_5hEkpuKcR9ux7mAtP_NFcCyEoUkaGiUkn-j7HHY"
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OSwiZXhwIjoxNjk1ODEzNTYzfQ.I18toprCoQ8ILZlx2OIu1Foh_7RjSso7_9TrW5hB1Pc"
 }
 
 ###
-GET http://localhost:9000/user/protected 
-Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjkxODQ2MzcyfQ.JqY_5hEkpuKcR9ux7mAtP_NFcCyEoUkaGiUkn-j7HHY
+GET http://localhost:5000/user/protected 
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OSwiZXhwIjoxNjk1ODEzNTYzfQ.I18toprCoQ8ILZlx2OIu1Foh_7RjSso7_9TrW5hB1Pc
 
 ###
-GET http://localhost:9000/database-queries/test-db
+GET http://localhost:5000/database-queries/test-db
 
 ###
-POST http://localhost:9000/database-queries/test-db/daniyed
+POST http://localhost:5000/database-queries/test-db/daniyed
 
 ###
-POST http://localhost:9000/database-queries/
+POST http://localhost:5000/database-queries/

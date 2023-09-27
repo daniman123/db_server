@@ -17,7 +17,10 @@ pub fn user_scope() -> Scope {
         .route("/encode-token/{id}", web::get().to(encode_token))
         .route("/decode-token", web::post().to(decode_token))
         .route("/protected", web::get().to(protected))
-        .route("/get-protected-followers", web::get().to(protected_followers))
+        .route(
+            "/get-protected-followers",
+            web::get().to(protected_followers),
+        )
         .route("/login", web::post().to(handle_login))
         .route("/logout", web::post().to(handle_logout))
 }
@@ -32,6 +35,7 @@ struct PersistResponse {
     message: String,
     id: i32,
     username: String,
+    access_token: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -105,6 +109,7 @@ async fn protected(auth_token: AuthenticationToken, state: web::Data<AppState>) 
         message: "protected".to_owned(),
         id: auth_token.id.try_into().unwrap(),
         username,
+        access_token: auth_token.token,
     })
 }
 

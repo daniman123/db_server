@@ -38,7 +38,7 @@ pub async fn handle_login(
             )
             .fetch_one(&mut *tx)
             .await;
-            let check_pass = deez.unwrap().passphrase;
+            let check_pass = deez.unwrap().password;
             let compared_check =
                 argon2::verify_encoded(&check_pass, &body.password.as_bytes()).unwrap_or(false);
 
@@ -58,7 +58,7 @@ pub async fn handle_login(
                 let access_token =
                     generate_token(id, secret.into_inner().to_string(), access_duration).await;
 
-                let cookie_header = format!("jwt={}; HttpOnly", access_token);
+                let cookie_header = format!("jwt={}; Path=/; HttpOnly", access_token);
                 HttpResponse::Ok()
                 .header("Set-Cookie", cookie_header)
                 .json(serde_json::json!({"username": body.username, "user_id":id, "access_token":access_token }))
